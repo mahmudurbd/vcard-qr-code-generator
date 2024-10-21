@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 
 const BusinessCard = () => {
@@ -9,6 +9,8 @@ const BusinessCard = () => {
     company: "",
     website: "",
   });
+
+  const qrRef = useRef(null);
 
   const handleChange = (e) => {
     setFormData({
@@ -23,6 +25,29 @@ const BusinessCard = () => {
   const qrData = `BEGIN:VCARD\nVERSION:3.0\nFN:${formData.name}\nORG:${formData.company}\nTEL:${formData.phone}\nEMAIL:${formData.email}\nURL:${formData.website}\nEND:VCARD`;
 
   console.log("Generated QR Data:", qrData);
+
+  // Function to download QR code as PNG
+  const handleDownload = () => {
+    const svgElement = qrRef.current.querySelector("svg");
+    const svgData = new XMLSerializer().serializeToString(svgElement);
+    const canvas = document.createElement("canvas");
+    const img = document.createElement("img");
+
+    img.src = `data:image/svg+xml;base64,${btoa(svgData)}`;
+    img.onload = () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0);
+
+      // Create a temporary anchor element to trigger the download
+      const pngFile = canvas.toDataURL("image/png");
+      const downloadLink = document.createElement("a");
+      downloadLink.href = pngFile;
+      downloadLink.download = "business-card-qr.png";
+      downloadLink.click();
+    };
+  };
 
   return (
     <div>
@@ -78,9 +103,12 @@ const BusinessCard = () => {
           onChange={handleChange}
         />
       </form>
-      <div style={{ marginTop: "80px" }} className="qr-section">
+      <div ref={qrRef} style={{ marginTop: "80px" }} className="qr-section">
         <QRCodeSVG value={qrData} />
       </div>
+      <button style={{ marginTop: "20px" }} onClick={handleDownload}>
+        Download QR Code
+      </button>
     </div>
   );
 };
