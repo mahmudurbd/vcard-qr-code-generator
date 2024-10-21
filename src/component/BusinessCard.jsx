@@ -27,6 +27,28 @@ const BusinessCard = () => {
   console.log("Generated QR Data:", qrData);
 
   // Function to download QR code as PNG
+  // const handleDownload = () => {
+  //   const svgElement = qrRef.current.querySelector("svg");
+  //   const svgData = new XMLSerializer().serializeToString(svgElement);
+  //   const canvas = document.createElement("canvas");
+  //   const img = document.createElement("img");
+
+  //   img.src = `data:image/svg+xml;base64,${btoa(svgData)}`;
+  //   img.onload = () => {
+  //     canvas.width = img.width;
+  //     canvas.height = img.height;
+  //     const ctx = canvas.getContext("2d");
+  //     ctx.drawImage(img, 0, 0);
+
+  //     // Create a temporary anchor element to trigger the download
+  //     const pngFile = canvas.toDataURL("image/png");
+  //     const downloadLink = document.createElement("a");
+  //     downloadLink.href = pngFile;
+  //     downloadLink.download = "business-card-qr.png";
+  //     downloadLink.click();
+  //   };
+  // };
+
   const handleDownload = () => {
     const svgElement = qrRef.current.querySelector("svg");
     const svgData = new XMLSerializer().serializeToString(svgElement);
@@ -35,10 +57,16 @@ const BusinessCard = () => {
 
     img.src = `data:image/svg+xml;base64,${btoa(svgData)}`;
     img.onload = () => {
-      canvas.width = img.width;
-      canvas.height = img.height;
+      const padding = 20; // Add padding around the QR code
+      canvas.width = img.width + padding * 2;
+      canvas.height = img.height + padding * 2;
+
       const ctx = canvas.getContext("2d");
-      ctx.drawImage(img, 0, 0);
+      // Fill the canvas with white background
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // Draw the QR code image on top of the white background with padding
+      ctx.drawImage(img, padding, padding);
 
       // Create a temporary anchor element to trigger the download
       const pngFile = canvas.toDataURL("image/png");
@@ -104,7 +132,7 @@ const BusinessCard = () => {
         />
       </form>
       <div ref={qrRef} style={{ marginTop: "80px" }} className="qr-section">
-        <QRCodeSVG value={qrData} />
+        <QRCodeSVG value={qrData} bgColor="#ffffff" fgColor="#000000" />
       </div>
       <button style={{ marginTop: "20px" }} onClick={handleDownload}>
         Download QR Code
