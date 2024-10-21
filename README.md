@@ -33,5 +33,39 @@ Make sure you have **Node.js** installed. You can download it from [Node.js offi
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/your-username/business-card-qr-generator.git
+   git clone https://github.com/mahmudurbd/vcard-qr-code-generator.git
    ```
+
+2. **Navigate to the project directory:**
+   ```bash
+   cd business-card-qr-generator
+   ```
+3. **Install dependencies::**
+   ```bash
+   npm install
+   ```
+4. **Run the application:**
+   ```bash
+   npm run dev
+   ```
+
+## Usage
+
+1. Open your browser and navigate to http://localhost:5173/.
+2. Enter your contact details such as Name, Email, Phone Number, Company, and Website URL in the form.
+3. As you enter the details, the QR code will be generated in real-time.
+4. You can scan the QR code using any QR code reader to get the vCard details.
+
+## Example
+
+Here’s an example of how the form looks:
+
+- **Name**: John Doe
+- **Email**: john.doe@example.com
+- **Phone**: +1234567890
+- **Company**: Example Inc.
+- **Website**: [https://example.com](https://example.com)
+
+## Contributing
+
+If you would like to contribute to this project, please open an issue or submit a pull request. Contributions are welcome!
